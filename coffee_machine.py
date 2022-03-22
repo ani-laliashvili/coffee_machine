@@ -17,30 +17,15 @@ def check_sufficient_resources(choice, resources):
 
 def take_coins():
     """
-    Take coins and return numbers of each
-    :return quarters: number of quarters inserted
-    :return dimes: number of dimes inserted
-    :return nickels: number of nickels inserted
-    :return pennies: number of pennies inserted
-    """
-    print('Please insert coins.')
-    quarters = int(input('How many quarters?: '))
-    dimes = int(input('How many dimes?: '))
-    nickels = int(input('How many nickles?: '))
-    pennies = int(input('How many pennies?: '))
-    return quarters, dimes, nickels, pennies
-
-
-def count_money(quarters, dimes, nickels, pennies):
-    """
-    Counts total money inserted
-    :param quarters: number of quarters inserted
-    :param dimes: number of dimes inserted
-    :param nickels: number of nickels inserted
-    :param pennies: number of pennies inserted
+    Counts total from coins inserted
     :return: money value of coins inserted
     """
-    return quarters*0.25 + nickels*0.05 + dimes*0.10 + pennies*0.01
+    print('Please insert coins.')
+    total = int(input('How many quarters?: ')) * 0.25
+    total += int(input('How many dimes?: ')) * 0.05
+    total += int(input('How many nickles?: ')) * 0.10
+    total += int(input('How many pennies?: ')) * 0.01
+    return total
 
 
 def is_money_sufficient(choice, money_in):
@@ -49,13 +34,19 @@ def is_money_sufficient(choice, money_in):
     :param choice: user-selected coffee type
     :param money_in: total money inserted
     :return: True/False
-    :return: change to be refunded
     """
     if money_in < MENU[choice]['cost']:
-        return False, 0
+        return False
     elif money_in >= MENU[choice]['cost']:
-        return True, money_in - MENU[choice]['cost']
+        return True
 
+def get_change(choice, money_in):
+    """
+    Get cjamge
+    :param money_in: total money inserted
+    :return: change to be refunded
+    """
+    return money_in - MENU[choice]['cost']
 
 def brew(choice, resources):
     """
@@ -89,31 +80,31 @@ def coffee_machine(resources):
     Ask for user input and perform functions using helper functions.
     :param resources: available resources
     """
-    coffee_choice = input('What would you like? (espresso/latte/cappuccino): ')
+    choice = input('What would you like? (espresso/latte/cappuccino): ')
     # turn the machine off
-    if coffee_choice == 'off':
+    if choice == 'off':
         quit()
     # provide a report of available resources if prompted
-    elif coffee_choice == 'report':
+    elif choice == 'report':
         print_report(resources)
     # Take coins, brew the coffee requested if money is sufficient
-    elif coffee_choice in ['espresso', 'latte', 'cappuccino']:
+    elif choice in ['espresso', 'latte', 'cappuccino']:
         # check if resources are sufficient
-        insufficient_resources = check_sufficient_resources(coffee_choice, resources)
+        insufficient_resources = check_sufficient_resources(choice, resources)
         if len(insufficient_resources) != 0:
             print(f'Sorry there is not enough {" or ".join(insufficient_resources)}.')
         else:
             # brew coffee and return change
-            quarters, dimes, nickels, pennies = take_coins()
-
-            sufficient, change = is_money_sufficient(coffee_choice, count_money(quarters, dimes, nickels, pennies))
+            money_in = take_coins()
+            sufficient = is_money_sufficient(choice, money_in)
             if sufficient:
+                change = get_change(choice, money_in)
                 if change > 0:
                     print(f'Here is ${round(change, 2)} in change.')
-                resources = brew(coffee_choice, resources)
+                resources = brew(choice, resources)
             else:
                 print('Sorry that\'s not enough money. Money refunded.')
-    # Invalid coffee choice
+    # Invalid choice
     else:
         print('Sorry. We do not have the coffee you selected.')
 
