@@ -42,7 +42,7 @@ def is_money_sufficient(choice, money_in):
 
 def get_change(choice, money_in):
     """
-    Get cjamge
+    Get change
     :param money_in: total money inserted
     :return: change to be refunded
     """
