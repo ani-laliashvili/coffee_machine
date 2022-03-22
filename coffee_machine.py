@@ -90,8 +90,11 @@ def coffee_machine(resources):
     :param resources: available resources
     """
     coffee_choice = input('What would you like? (espresso/latte/cappuccino): ')
+    # turn the machine off
+    if coffee_choice == 'off':
+        quit()
     # provide a report of available resources if prompted
-    if coffee_choice == 'report':
+    elif coffee_choice == 'report':
         print_report(resources)
     # Take coins, brew the coffee requested if money is sufficient
     elif coffee_choice in ['espresso', 'latte', 'cappuccino']:
