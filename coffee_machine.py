@@ -1,6 +1,6 @@
 # Coffee machine project
 
-def check_sufficient_resources(choice, resources):
+def check_sufficient_resources(drink_name, resources):
     """
     Check if there are sufficient resources to make the coffee selected
     :param choice: user-selected coffee type
@@ -9,8 +9,8 @@ def check_sufficient_resources(choice, resources):
     """
     insufficient_resources = []
 
-    for key in MENU[choice]['ingredients']:
-        if resources[key]['amount'] < MENU[choice]['ingredients'][key]['amount']:
+    for key in MENU[drink_name]['ingredients']:
+        if resources[key]['amount'] < MENU[drink_name]['ingredients'][key]['amount']:
             insufficient_resources.append(key)
     return insufficient_resources
 
@@ -28,27 +28,27 @@ def take_coins():
     return total
 
 
-def is_money_sufficient(choice, money_in):
+def is_money_sufficient(drink_name, money_in):
     """
     Check if inserted coins are sufficient for selected coffee
     :param choice: user-selected coffee type
     :param money_in: total money inserted
     :return: True/False
     """
-    if money_in < MENU[choice]['cost']:
+    if money_in < MENU[drink_name]['cost']:
         return False
-    elif money_in >= MENU[choice]['cost']:
+    elif money_in >= MENU[drink_name]['cost']:
         return True
 
-def get_change(choice, money_in):
+def get_change(drink_name, money_in):
     """
     Get change
     :param money_in: total money inserted
     :return: change to be refunded
     """
-    return money_in - MENU[choice]['cost']
+    return money_in - MENU[drink_name]['cost']
 
-def brew(choice, resources):
+def brew(drink_name, resources):
     """
     Brew selected coffee
     :param choice: user-selected coffee type
@@ -56,10 +56,10 @@ def brew(choice, resources):
     :param money_in: money paid
     :return: remaining resources after brewing
     """
-    for key in MENU[choice]['ingredients']:
-        resources[key]['amount'] = resources[key]['amount'] - MENU[choice]['ingredients'][key]['amount']
-    resources['money']['amount'] = resources['money']['amount'] + MENU[choice]['cost']
-    print(f'Here is your {choice}. Enjoy!')
+    for key in MENU[drink_name]['ingredients']:
+        resources[key]['amount'] = resources[key]['amount'] - MENU[drink_name]['ingredients'][key]['amount']
+    resources['money']['amount'] = resources['money']['amount'] + MENU[drink_name]['cost']
+    print(f'Here is your {drink_name}. Enjoy!')
     return resources
 
 
