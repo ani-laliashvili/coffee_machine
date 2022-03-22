@@ -1,3 +1,3 @@
 # coffee_maker
 
-This script simulates a coffee maker.
+This script simulates a coffee machine.
